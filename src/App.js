@@ -10,10 +10,10 @@ function App() {
   const [nextUrl, setNextUrl] = useState('');
   const [loading, setLoading] = useState(true);
   const initialUrl = 'https://pokeapi.co/api/v2/pokemon';
+
   useEffect(() => {
     async function fetchData() {
       let response = await getAllPokemon(initialUrl);
-      console.log('response', response);
       setPrevUrl(response.previous);
       setNextUrl(response.next);
       await loadingPokemon(response.results);
@@ -21,6 +21,7 @@ function App() {
     fetchData();
   }, []);
 
+  //- next button pagination function starts here
   const next = async () => {
     if (nextUrl != null) {
       setLoading(true);
@@ -28,8 +29,13 @@ function App() {
       await loadingPokemon(response.results);
       setPrevUrl(response.previous);
       setNextUrl(response.next);
+    } else {
+      alert("Next data ends here.To get more data click on previous button")
     }
   }
+  //- next button pagination function ends here
+
+  //- previous button pagination function starts here
   const prev = async () => {
     if (prevUrl != null) {
       setLoading(true);
@@ -37,17 +43,27 @@ function App() {
       await loadingPokemon(response.results);
       setPrevUrl(response.previous);
       setNextUrl(response.next);
+    } else {
+      alert("Preivous data ends here.To get more data click on next button")
     }
   }
+  //- previous button pagination function ends here
+
   const loadingPokemon = async (data) => {
-    let pokemonData = await Promise.all(data.map(async pokemon => {
+    let pokemonData = await Promise.all(data.map(async (pokemon) => {
       let pokemonInfo = await getPokemon(pokemon.url);
       return pokemonInfo;
     }));
-    console.log('pokemonData', pokemonData);
     setPokemonData(pokemonData);
     setLoading(false);
   }
+
+  //- search functionality starts here
+  const getFilterData = (searchVal) => {
+    const result = pokemonData.filter(p => p.name.includes(searchVal));
+    setPokemonData(result);
+  }
+  //- search functionality ends here
 
   return (
     <div>
@@ -57,11 +73,11 @@ function App() {
         </div>
       ) : (
         <>
-          <Navbar />
+          <Navbar getFilterData={getFilterData} />
           <div className="bg-slate-300">
             <div className="flex pt-5 justify-center">
               <button className="bg-gray-400 hover:bg-gray-500 hover:text-white text-gray-800 font-bold py-2 px-4 rounded-l" onClick={() => { prev() }}>
-                Prev
+                Previous
               </button>
               <button className="bg-gray-400 hover:bg-gray-500  hover:text-white text-gray-800 font-bold py-2 px-4 rounded-r" onClick={() => {
                 next()

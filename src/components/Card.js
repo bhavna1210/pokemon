@@ -1,5 +1,6 @@
 import React from 'react';
 import colorTypes from '../helpers/colorTypes.js';
+
 const Card = ({ pokemon }) => {
     return (<>
         <div className="max-w-sm m-5 rounded overflow-hidden shadow-lg bg-white text-center capitalize cursor-pointer">
