@@ -12,13 +12,11 @@ function App() {
   const initialUrl = 'https://pokeapi.co/api/v2/pokemon';
   useEffect(() => {
     async function fetchData() {
-      console.log('In Fetch Data function .....');
       let response = await getAllPokemon(initialUrl);
       console.log('response', response);
       setPrevUrl(response.previous);
       setNextUrl(response.next);
       await loadingPokemon(response.results);
-      setLoading(false);
     }
     fetchData();
   }, []);
@@ -30,7 +28,6 @@ function App() {
       await loadingPokemon(response.results);
       setPrevUrl(response.previous);
       setNextUrl(response.next);
-      setLoading(false);
     }
   }
   const prev = async () => {
@@ -40,7 +37,6 @@ function App() {
       await loadingPokemon(response.results);
       setPrevUrl(response.previous);
       setNextUrl(response.next);
-      setLoading(false);
     }
   }
   const loadingPokemon = async (data) => {
@@ -48,27 +44,37 @@ function App() {
       let pokemonInfo = await getPokemon(pokemon.url);
       return pokemonInfo;
     }));
+    console.log('pokemonData', pokemonData);
     setPokemonData(pokemonData);
+    setLoading(false);
   }
 
   return (
     <div>
-      {loading ? <h1>Loading...</h1> : (
+      {loading ? (
+        <div className="flex items-center justify-center h-screen w-screen">
+          <p className="text-4xl font-bold">Loading...</p>
+        </div>
+      ) : (
         <>
           <Navbar />
           <div className="bg-slate-300">
-            <div class="inline-flex mb-5">
-              <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l" onClick={prev}>
+            <div className="flex pt-5 justify-center">
+              <button className="bg-gray-400 hover:bg-gray-500 hover:text-white text-gray-800 font-bold py-2 px-4 rounded-l" onClick={() => { prev() }}>
                 Prev
               </button>
-              <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r" onClick={next}>
+              <button className="bg-gray-400 hover:bg-gray-500  hover:text-white text-gray-800 font-bold py-2 px-4 rounded-r" onClick={() => {
+                next()
+              }}>
                 Next
               </button>
             </div>
             <div className="grid-container ">
-              {pokemonData.map((p, i) => {
-                return <Card key={i} pokemon={p} />
-              })}
+              <div className="flex flex-wrap">
+                {pokemonData.map((p, i) => {
+                  return <Card key={i} pokemon={p} />
+                })}
+              </div>
             </div>
           </div>
         </>
