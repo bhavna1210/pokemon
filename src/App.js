@@ -11,7 +11,7 @@ function App() {
   const [nextUrl, setNextUrl] = useState('');
   const [loading, setLoading] = useState(true);
   const initialUrl = 'https://pokeapi.co/api/v2/pokemon';
-  
+
   useEffect(() => {
     async function fetchData() {
       let response = await getAllPokemon(initialUrl);
@@ -64,7 +64,7 @@ function App() {
   const getFilterData = (searchVal) => {
     if (searchVal && searchVal.length > 0) {
       const result = pokemonData.filter(p => p.name.includes(searchVal));
-      setPokemonData(result);  
+      setPokemonData(result);
     } else {
       setPokemonData(finalPokemonData);
     }
@@ -73,13 +73,13 @@ function App() {
 
   return (
     <div>
+      <Navbar getFilterData={getFilterData} />
       {loading ? (
         <div className="flex items-center justify-center h-screen w-screen">
           <p className="text-4xl font-bold">Loading...</p>
         </div>
       ) : (
         <>
-          <Navbar getFilterData={getFilterData} />
           <div className="bg-slate-300">
             <div className="flex pt-5 justify-center">
               <button className="bg-gray-400 hover:bg-gray-500 hover:text-white text-gray-800 font-bold py-2 px-4 rounded-l" onClick={() => { prev() }}>
