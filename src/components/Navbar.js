@@ -1,7 +1,11 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 const Navbar = ({ getFilterData }) => {
-    let searchTxt = '';
+    const [searchString, setSearchString] = useState();
+    const searchingFunction = (val) => {
+        setSearchString(val);
+        getFilterData(val);
+    }
     return (
         <>
             <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-3">
@@ -11,9 +15,9 @@ const Navbar = ({ getFilterData }) => {
                 <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
                     <div className="text-sm lg:flex-grow">
                     </div>
-                    {/* <div>
-                        <input type="text" value={searchTxt} placeholder='search' onChange={(e) => {getFilterData(e.target.value)}}/>
-                    </div> */}
+                    <div>
+                        <input type="text" value={searchString} placeholder='search' onChange={(e) => {searchingFunction(e.target.value) }}/>
+                    </div>
                 </div>
             </nav>
         </>

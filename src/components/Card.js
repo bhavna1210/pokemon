@@ -13,18 +13,18 @@ const Card = ({ pokemon }) => {
                 <div className="text-gray-700 text-base">
                     <p className="title">Weight : {pokemon.weight}</p>
                     <p className="title">Height : {pokemon.height}</p>
-                    <p className="title">Ability : {pokemon.abilities.map(a => {
+                    <p className="title">Ability : {pokemon.abilities.map((a, i) => {
                         return (
-                        <span className="mr-1">{a.ability.name}</span>
+                            <span key={i} className="mr-1">{a.ability.name}</span>
                         )
                     })}
                     </p>
                 </div>
             </div>
             <div className="px-6 pt-4 pb-2">
-                {pokemon.types.map(obj => {
+                {pokemon.types.map((obj, i) => {
                     return (
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2" style={{ backgroundColor: colorTypes[obj.type.name] }}>{obj.type.name}</span>
+                        <span key={i} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2" style={{ backgroundColor: colorTypes[obj.type.name] }}>{obj.type.name}</span>
                     )
                 })}
             </div>

@@ -5,12 +5,13 @@ import Card from "./components/Card";
 
 
 function App() {
+  const [finalPokemonData, setFinalPokemonData] = useState([]);
   const [pokemonData, setPokemonData] = useState([]);
   const [prevUrl, setPrevUrl] = useState('');
   const [nextUrl, setNextUrl] = useState('');
   const [loading, setLoading] = useState(true);
   const initialUrl = 'https://pokeapi.co/api/v2/pokemon';
-
+  
   useEffect(() => {
     async function fetchData() {
       let response = await getAllPokemon(initialUrl);
@@ -54,14 +55,19 @@ function App() {
       let pokemonInfo = await getPokemon(pokemon.url);
       return pokemonInfo;
     }));
+    setFinalPokemonData(pokemonData);
     setPokemonData(pokemonData);
     setLoading(false);
   }
 
   //- search functionality starts here
   const getFilterData = (searchVal) => {
-    const result = pokemonData.filter(p => p.name.includes(searchVal));
-    setPokemonData(result);
+    if (searchVal && searchVal.length > 0) {
+      const result = pokemonData.filter(p => p.name.includes(searchVal));
+      setPokemonData(result);  
+    } else {
+      setPokemonData(finalPokemonData);
+    }
   }
   //- search functionality ends here
 
